@@ -13,17 +13,17 @@ print('x={0}, y={1}' .format(x, y))
 # pyautogui.click()
 # pyautogui.click(button='right')
 
-# 드래그
-pyautogui.mouseDown(x=384, y=150)
-pyautogui.mouseUp(x=431, y=153)
+# # 드래그
+# pyautogui.mouseDown(x=384, y=150)
+# pyautogui.mouseUp(x=431, y=153)
 
-# 복붙 
+# # 복붙 
 
-pyautogui.hotkey('ctrl', 'c')
+# pyautogui.hotkey('ctrl', 'c')
 
-time.sleep(1)
-pyautogui.click(x=1266, y=248)
-time.sleep(1)
+# time.sleep(1)
+# pyautogui.click(x=1266, y=248)
+# time.sleep(1)
 
-pyautogui.hotkey('ctrl', 'v')
+# pyautogui.hotkey('ctrl', 'v')
 
