@@ -8,3 +8,5 @@ pyautogui
 pygetwindow   
 
 pywin32
+
+ui 구글 드라이브: https://docs.google.com/presentation/d/1EEEDdmdqAc6S3DLBRFl8RDfnBKhy6zJevac2ErtZuCE/edit?usp=sharing
