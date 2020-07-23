@@ -1,12 +1,19 @@
 import pyautogui
 import time
 
+from pynput import mouse
+def on_click(x, y, button, pressed):
+    if pressed == True:
+        print(x,y)
+with mouse.Listener(on_click=on_click) as listener:
+     listener.join()
+
 # target
 # x=384, y=150 ~ x=431, y=153
 
 # 마우스 좌표
-x, y = pyautogui.position()
-print('x={0}, y={1}' .format(x, y))
+# x, y = pyautogui.position()
+# print('x={0}, y={1}' .format(x, y))
 
 
 # 마우스 클릭

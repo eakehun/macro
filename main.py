@@ -9,7 +9,7 @@ time.sleep(3)
 
 # target
 # x=1250, y=174 ~ x=1363, y=173
-pyautogui.click(x=500, y=806)
+pyautogui.click(x=708, y=755)
 
 time.sleep(1)
 
@@ -19,7 +19,8 @@ time.sleep(1)
 
 # pyautogui.mouseUp(x=664, y=806)
 
-pyautogui.dragTo(667, 807, 1, button='left')
+
+pyautogui.dragTo(807, 763, 1, button='left')
 
 pyautogui.hotkey('ctrl', 'c')
 
@@ -30,3 +31,4 @@ data = win32clipboard.GetClipboardData()
 win32clipboard.CloseClipboard()
 
 print(data)
+qwe123
