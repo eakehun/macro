@@ -1,15 +1,17 @@
 import pyautogui
 import time
 import win32clipboard
+import webbrowser
 
 class sequence:
-    def __init__(self, startXy, eventType, endXy, text, command, delayTime, actionType):
+    def __init__(self, startXy, eventType, endXy, text, _url, command, delayTime, actionType):
         # print(eventType)
 
         self.eventType = eventType
         self.startXy = startXy
         self.endXy = endXy
         self.text = text
+        self._url = _url
         self.command = command
         self.delayTime = delayTime
         self.actionType = actionType
@@ -50,14 +52,14 @@ class sequence:
     
     def textTypo(self, text):
         # print(text)
-        win32clipboard.OpenClipboard()        
-        win32clipboard.EmptyClipboard()
-        win32clipboard.SetClipboardText(text, win32clipboard.CF_TEXT)
-        win32clipboard.CloseClipboard()
+        # win32clipboard.OpenClipboard()
+        # win32clipboard.EmptyClipboard()
+        # win32clipboard.SetClipboardText(text, win32clipboard.CF_TEXT)
+        # win32clipboard.CloseClipboard()
 
-        pyautogui.hotkey('ctrl', 'v')
+        # pyautogui.hotkey('ctrl', 'v')
 
-        # pyautogui.write(text, interval=0.1)
+        pyautogui.write(text, interval=0.1)
 
     def commandCopy(self):
         pyautogui.hotkey('ctrl', 'c')
@@ -78,5 +80,7 @@ class sequence:
                 self.commandCopy()
             elif self.command == 'paste':
                 self.commandPaste()
+        elif self.eventType == '브라우저':
+            webbrowser.open(self._url, new=2)
 
         time.sleep(int(self.delayTime))

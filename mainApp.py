@@ -4,6 +4,7 @@ import pyautogui
 import win32clipboard
 import eventManager
 import sequence
+import json
 from PyQt5.QtWidgets import QWidget, QApplication, QDesktopWidget, QLabel, QGridLayout, QComboBox, QLineEdit, QPushButton, QScrollArea, QRadioButton, QButtonGroup, QVBoxLayout, QHBoxLayout
 from PyQt5.QtCore import Qt, QObject, pyqtSignal, pyqtSlot, QThread
 from pynput import keyboard
@@ -13,7 +14,7 @@ class ButtonReleaseManager(QObject):
     store = set()
 
     MY_HOTKEY = {
-        "mouse_position_copy": set([keyboard.Key.ctrl_l, keyboard.Key.alt_l, keyboard.KeyCode(67)])        
+        "mouse_position_copy": set([keyboard.Key.ctrl_l, keyboard.Key.alt_l, keyboard.KeyCode(67)])
     }
     
     released = pyqtSignal()
@@ -84,6 +85,7 @@ class mainApp(QWidget):
         self.inputTypeCombobox.addItem('드래그')
         self.inputTypeCombobox.addItem('텍스트')
         self.inputTypeCombobox.addItem('핫키')
+        self.inputTypeCombobox.addItem('브라우저')
 
         self.inputTypeCombobox.activated[str].connect(self.onActivated)
 
@@ -96,6 +98,9 @@ class mainApp(QWidget):
 
         self.typoTextLabel = QLabel('텍스트', self)        
         self.typoText = QLineEdit(self)
+
+        self.browserLabel = QLabel('URL', self)        
+        self.browserText = QLineEdit(self)
         
         hotkeyGroup = QButtonGroup(self)
         self.copyRadio = QRadioButton('복사')
@@ -126,6 +131,8 @@ class mainApp(QWidget):
 
         self.typoTextLabel.hide()
         self.typoText.hide()
+        self.browserLabel.hide()
+        self.browserText.hide()
         self.copyRadio.hide()
         self.pasteRadio.hide()
         self.endCoText.setEnabled(False)
@@ -170,6 +177,8 @@ class mainApp(QWidget):
 
         mainLayout.addWidget(self.typoTextLabel, 1, 2)
         mainLayout.addWidget(self.typoText, 1, 3, 1, 3)
+        mainLayout.addWidget(self.browserLabel, 1, 2)
+        mainLayout.addWidget(self.browserText, 1, 3, 1, 3)
 
         mainLayout.addWidget(self.copyRadio, 1, 2)
         mainLayout.addWidget(self.pasteRadio, 1, 3, 1, 3)
@@ -198,6 +207,13 @@ class mainApp(QWidget):
         self.move(qtRectangle.topLeft())        
         self.show()
 
+
+        # with open('eventScenario.json', encoding='UTF8') as json_file:
+        #     json_data = json.load(json_file)
+        #     # print(json_data)
+        #     self.jsonEventAdd(json_data)
+        #     self.buildEventLayout()
+
         
 
     def mouseTrack(self):
@@ -212,7 +228,9 @@ class mainApp(QWidget):
             if self.eventThread.isRun:
                 self.eventThread.isRun = False
                 print('loop end')
-            else:                
+            else:
+                with open("eventScenario.json", "w") as json_file:
+                    json.dump(self.eventManager.eventScenarioJson, json_file)
                 print('app end')
                 self.close()
 
@@ -223,12 +241,14 @@ class mainApp(QWidget):
         self.endCoText.hide()
         self.typoTextLabel.hide()
         self.typoText.hide()
+        self.browserLabel.hide()
+        self.browserText.hide()
         self.copyRadio.hide()
         self.pasteRadio.hide()
 
-
         self.startCoText.setText('')
         self.typoText.setText('')
+        self.browserText.setText('')
         self.endCoText.setText('')
         self.delayText.setText('')
 
@@ -255,6 +275,10 @@ class mainApp(QWidget):
             self.copyRadio.show()
             self.pasteRadio.show()
             self.copyRadio.setChecked(True)
+        
+        elif text == '브라우저':
+            self.browserLabel.show()
+            self.browserText.show()
             
     def eventAdd(self):
         # print('add click')
@@ -263,6 +287,7 @@ class mainApp(QWidget):
         startXy = self.startCoText.text()
         endXy = self.endCoText.text()
         typoText = self.typoText.text()
+        url = self.browserText.text()
         hotkey = 'copy'
 
         if self.copyRadio.isChecked():
@@ -277,10 +302,46 @@ class mainApp(QWidget):
         self.clearEventLayout()
 
         
-        newSeq = sequence.sequence(startXy, eventType, endXy, typoText, hotkey, delay, actionType)
+        newSeq = sequence.sequence(startXy, eventType, endXy, typoText, url, hotkey, delay, actionType)
         self.eventManager.addEvent(newSeq, actionType)
-        
         self.buildEventLayout()
+
+        # print(json.dumps(self.eventManager))
+
+    def jsonEventAdd(self, jsonData):
+        # print('add click')
+
+        eventList = jsonData['eventList']
+        repeatEventList = jsonData['repeatEventList']
+
+        for eventSeq in eventList:
+            eventType = eventSeq['eventType']
+            startXy = eventSeq['startXy']
+            endXy = eventSeq['endXy']
+            typoText = eventSeq['text']
+            url = eventSeq['url']
+            hotkey = eventSeq['command']
+
+            delay = eventSeq['delayTime']
+            actionType = eventSeq['actionType']
+            
+            newSeq = sequence.sequence(startXy, eventType, endXy, typoText, url, hotkey, delay, actionType)
+            self.eventManager.addEvent(newSeq, actionType)
+
+        for eventSeq in repeatEventList:
+            eventType = eventSeq['eventType']
+            startXy = eventSeq['startXy']
+            endXy = eventSeq['endXy']
+            typoText = eventSeq['text']
+            url = eventSeq['url']
+            hotkey = eventSeq['command']
+
+            delay = eventSeq['delayTime']
+            actionType = eventSeq['actionType']
+            
+            newSeq = sequence.sequence(startXy, eventType, endXy, typoText, url, hotkey, delay, actionType)
+            self.eventManager.addEvent(newSeq, actionType)
+
 
     def clearEventLayout(self):
         while self.scrollWidget.layout().count():
@@ -370,7 +431,14 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = mainApp()
     
-    
+    with open('eventScenario.json', encoding='UTF8') as json_file:
+        try:
+            json_data = json.load(json_file)        
+            ex.jsonEventAdd(json_data)
+            ex.buildEventLayout()
+        except json.decoder.JSONDecodeError:
+            pass
+        
     
     sys.exit(app.exec_())
 
