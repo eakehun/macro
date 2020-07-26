@@ -5,19 +5,21 @@ import win32clipboard
 import eventManager
 import sequence
 import json
+from collections import deque
 from PyQt5.QtWidgets import QWidget, QApplication, QDesktopWidget, QLabel, QGridLayout, QComboBox, QLineEdit, QPushButton, QScrollArea, QRadioButton, QButtonGroup, QVBoxLayout, QHBoxLayout
 from PyQt5.QtCore import Qt, QObject, pyqtSignal, pyqtSlot, QThread
 from pynput import keyboard
-
 
 class ButtonReleaseManager(QObject):
     store = set()
 
     MY_HOTKEY = {
-        "mouse_position_copy": set([keyboard.Key.ctrl_l, keyboard.Key.alt_l, keyboard.KeyCode(67)])
+        "mouse_position_copy": set([keyboard.Key.ctrl_l, keyboard.Key.alt_l, keyboard.KeyCode(67)]),
+        "loopStop": set([keyboard.Key.ctrl_l, keyboard.Key.alt_l, keyboard.KeyCode(68)])
     }
     
     released = pyqtSignal()
+    loopStop = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -27,9 +29,14 @@ class ButtonReleaseManager(QObject):
     def _key_pressed(self, key):
         self.store.add( key )        
         
-        for functionName in self.MY_HOTKEY:
-            if all(k in self.store for k in self.MY_HOTKEY.get(functionName)):
-                self.released.emit()
+        
+        if all(k in self.store for k in self.MY_HOTKEY.get('mouse_position_copy')):
+            self.released.emit()
+        
+        if all(k in self.store for k in self.MY_HOTKEY.get('loopStop')):
+            self.loopStop.emit()
+
+        
             
     def _key_released(self, key):
         if key in self.store:
@@ -45,9 +52,12 @@ class mainApp(QWidget):
         self.initUI()
         self.manager = ButtonReleaseManager()
         self.manager.released.connect(self.show_position)
+        self.manager.loopStop.connect(self.loopStop)        
 
         self.eventThread = eventManager.eventThread(parent=self)
         self.eventManager = eventManager.eventManager(self.eventThread)
+
+        self.pinList = deque()
         
 
     def initUI(self):
@@ -83,9 +93,14 @@ class mainApp(QWidget):
         self.inputTypeCombobox = QComboBox(self)
         self.inputTypeCombobox.addItem('클릭')
         self.inputTypeCombobox.addItem('드래그')
+        self.inputTypeCombobox.addItem('마우스이동')
         self.inputTypeCombobox.addItem('텍스트')
+        self.inputTypeCombobox.addItem('핀입력')
         self.inputTypeCombobox.addItem('핫키')
         self.inputTypeCombobox.addItem('브라우저')
+        self.inputTypeCombobox.addItem('결과확인')
+        
+
 
         self.inputTypeCombobox.activated[str].connect(self.onActivated)
 
@@ -141,8 +156,16 @@ class mainApp(QWidget):
 
         # 아래
         
-        self.pinLabel = QLabel()
-        self.pinLabel.setStyleSheet("border :1px solid grey;")
+        # self.pinLabel = QLabel()
+        # self.pinLabel.setStyleSheet("border :1px solid grey;")
+
+        self.pinLabelScrollArea = QScrollArea()
+        self.pinLabelScrollArea.setWidgetResizable(True)
+        self.pinScrollWidget = QWidget(self)
+        pinScrollLayout = QVBoxLayout(self)
+
+        self.pinScrollWidget.setLayout(pinScrollLayout)
+        self.pinLabelScrollArea.setWidget(self.pinScrollWidget)
 
         self.eventLabelScrollArea = QScrollArea()
         self.eventLabelScrollArea.setWidgetResizable(True)
@@ -190,8 +213,8 @@ class mainApp(QWidget):
         mainLayout.addWidget(self.addButton, 1, 10)
         mainLayout.addWidget(self.startButton, 1, 11)
 
-        mainLayout.addWidget(self.pinLabel, 2, 0, 10, 10)
-        mainLayout.addWidget(self.eventLabelScrollArea, 13, 0, 1, 10)
+        mainLayout.addWidget(self.pinLabelScrollArea, 2, 0, 1, 10)
+        mainLayout.addWidget(self.eventLabelScrollArea, 3, 0, 1, 10)
 
         # mouseTrackThread = threading.Thread(target=self.mouseTrack, args=())
         # mouseTrackThread.daemon = True
@@ -200,19 +223,12 @@ class mainApp(QWidget):
         self.setLayout(mainLayout)
 
         self.setWindowTitle('Sample Macro')
-        self.setFixedSize(1024, 768)
+        self.setFixedSize(1280, 768)
         qtRectangle = self.frameGeometry()
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
         self.move(qtRectangle.topLeft())        
         self.show()
-
-
-        # with open('eventScenario.json', encoding='UTF8') as json_file:
-        #     json_data = json.load(json_file)
-        #     # print(json_data)
-        #     self.jsonEventAdd(json_data)
-        #     self.buildEventLayout()
 
         
 
@@ -230,7 +246,7 @@ class mainApp(QWidget):
                 print('loop end')
             else:
                 with open("eventScenario.json", "w") as json_file:
-                    json.dump(self.eventManager.eventScenarioJson, json_file)
+                    json.dump(self.eventManager.eventScenarioJson, json_file, indent=4)
                 print('app end')
                 self.close()
 
@@ -253,7 +269,7 @@ class mainApp(QWidget):
         self.delayText.setText('')
 
 
-        if text == '클릭':
+        if text == '클릭' or text == '이동':
             self.startCoTextLabel.show()
             self.startCoText.show()
             self.endCoTextLabel.show()
@@ -302,7 +318,7 @@ class mainApp(QWidget):
         self.clearEventLayout()
 
         
-        newSeq = sequence.sequence(startXy, eventType, endXy, typoText, url, hotkey, delay, actionType)
+        newSeq = sequence.sequence(startXy, eventType, endXy, typoText, url, hotkey, delay, actionType, self.pinList)
         self.eventManager.addEvent(newSeq, actionType)
         self.buildEventLayout()
 
@@ -325,7 +341,7 @@ class mainApp(QWidget):
             delay = eventSeq['delayTime']
             actionType = eventSeq['actionType']
             
-            newSeq = sequence.sequence(startXy, eventType, endXy, typoText, url, hotkey, delay, actionType)
+            newSeq = sequence.sequence(startXy, eventType, endXy, typoText, url, hotkey, delay, actionType, self.pinList)
             self.eventManager.addEvent(newSeq, actionType)
 
         for eventSeq in repeatEventList:
@@ -339,7 +355,7 @@ class mainApp(QWidget):
             delay = eventSeq['delayTime']
             actionType = eventSeq['actionType']
             
-            newSeq = sequence.sequence(startXy, eventType, endXy, typoText, url, hotkey, delay, actionType)
+            newSeq = sequence.sequence(startXy, eventType, endXy, typoText, url, hotkey, delay, actionType, self.pinList)
             self.eventManager.addEvent(newSeq, actionType)
 
 
@@ -352,7 +368,7 @@ class mainApp(QWidget):
     def buildEventLayout(self):
         for idx, eventSeq in enumerate(self.eventManager.eventList):
 
-            seqString = '동작구분={0}, 시작좌표={1}, 끝좌표={2}, 텍스트={3}, 단축키={4}, 지연시간={5}, 반복구분={6}\n' .format(eventSeq.eventType, eventSeq.startXy, eventSeq.endXy, eventSeq.text, eventSeq.command, eventSeq.delayTime, eventSeq.actionType)
+            seqString = '동작구분={0}, 시작좌표={1}, 끝좌표={2}, 텍스트={3}, 주소={7}단축키={4}, 지연시간={5}, 반복구분={6}\n' .format(eventSeq.eventType, eventSeq.startXy, eventSeq.endXy, eventSeq.text, eventSeq.command, eventSeq.delayTime, eventSeq.actionType, eventSeq._url)
 
             eventLabel = QLabel(seqString)
             eventEditButton = QPushButton()
@@ -370,7 +386,7 @@ class mainApp(QWidget):
 
         for idx, repeatEventSeq in enumerate(self.eventManager.repeatEventList, len(self.eventManager.eventList)):
 
-            seqString = '동작구분={0}, 시작좌표={1}, 끝좌표={2}, 텍스트={3}, 단축키={4}, 지연시간={5}, 반복구분={6}\n' .format(repeatEventSeq.eventType, repeatEventSeq.startXy, repeatEventSeq.endXy, repeatEventSeq.text, repeatEventSeq.command, repeatEventSeq.delayTime, repeatEventSeq.actionType)
+            seqString = '동작구분={0}, 시작좌표={1}, 끝좌표={2}, 텍스트={3}, 주소={7}단축키={4}, 지연시간={5}, 반복구분={6}\n' .format(repeatEventSeq.eventType, repeatEventSeq.startXy, repeatEventSeq.endXy, repeatEventSeq.text, repeatEventSeq.command, repeatEventSeq.delayTime, repeatEventSeq.actionType, repeatEventSeq._url)
             
             eventLabel = QLabel(seqString)
             eventEditButton = QPushButton()
@@ -412,7 +428,36 @@ class mainApp(QWidget):
         win32clipboard.CloseClipboard()
 
         self.currentCoLabel.setText(coordText)
+    
+    @pyqtSlot()
+    def loopStop(self):
+        self.eventManager.isRun = False
+        self.eventThread.isRun = False
+        print('crtl+d: loop stop')
+
+
+    def pinLoad(self, _data):
+        pinData = _data['pinData']
+        count = 0;
+        # for i in range(2) :
+        for pinString in pinData:
             
+            self.pinList.append(pinString)
+
+            
+
+            pinText = '{0}: {1}'.format(count, pinString)
+
+            pinLabel = QLabel(pinText)
+
+            self.pinScrollWidget.layout().addWidget(pinLabel)
+            count += 1
+
+                
+
+
+        
+
 
     # def inputInit(self):
     #     with mouse.Listener(on_click=self.on_click) as listener:
@@ -433,12 +478,20 @@ if __name__ == '__main__':
     
     with open('eventScenario.json', encoding='UTF8') as json_file:
         try:
-            json_data = json.load(json_file)        
+            json_data = json.load(json_file)   
             ex.jsonEventAdd(json_data)
             ex.buildEventLayout()
         except json.decoder.JSONDecodeError:
             pass
-        
+
+    with open('pinData.json', encoding='UTF8') as json_file:
+        try:
+            json_data = json.load(json_file)   
+            ex.pinLoad(json_data)            
+        except json.decoder.JSONDecodeError:
+            pass
+    
+
     
     sys.exit(app.exec_())
 

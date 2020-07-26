@@ -21,6 +21,8 @@ class eventManager(QObject):
         self.eventThread = eventThread
 
         self.eventStarted.connect(self.eventThread.setEventList)
+
+        self.isRun = True
         
         # print('event manager')
 
@@ -55,11 +57,13 @@ class eventManager(QObject):
             del self.repeatEventList[-1]
 
     def executeEvent(self):
-
+        self.isRun = True
         
 
         for seq in self.eventList:
-            seq.launch()
+            if self.isRun:
+                seq.launch()
+
         if len(self.repeatEventList) > 0:
             self.eventStarted.emit(self.repeatEventList)
             self.eventThread.isRun = True

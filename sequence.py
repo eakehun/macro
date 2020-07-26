@@ -2,9 +2,10 @@ import pyautogui
 import time
 import win32clipboard
 import webbrowser
+from collections import deque
 
 class sequence:
-    def __init__(self, startXy, eventType, endXy, text, _url, command, delayTime, actionType):
+    def __init__(self, startXy, eventType, endXy, text, _url, command, delayTime, actionType, pinList):
         # print(eventType)
 
         self.eventType = eventType
@@ -15,6 +16,7 @@ class sequence:
         self.command = command
         self.delayTime = delayTime
         self.actionType = actionType
+        self.pinList = pinList
 
         # if eventType == 'click':
         #     self.mouseDown(startXy)
@@ -59,13 +61,32 @@ class sequence:
 
         # pyautogui.hotkey('ctrl', 'v')
 
-        pyautogui.write(text, interval=0.1)
+        pyautogui.write(text, interval=0.2)
 
     def commandCopy(self):
         pyautogui.hotkey('ctrl', 'c')
 
     def commandPaste(self):
         pyautogui.hotkey('ctrl', 'v')
+
+    def mouseMove(self, startXy):
+        data = startXy.split(',')
+        pyautogui.moveTo(x=int(data[0]), y=int(data[1]))
+
+    def loggingResult(self):
+        win32clipboard.OpenClipboard()                
+        resultString = win32clipboard.GetClipboardData()
+        win32clipboard.EmptyClipboard()
+        win32clipboard.CloseClipboard()
+
+        resultString = resultString.replace('null')
+        resultString = resultString.replace('추가 충전하기다 쓴 문상이벤트 바로가기')
+
+        # print(resultString)
+
+        logFile = open('log.txt', 'a', encoding='utf-8')
+        logFile.write(resultString)
+        logFile.close
 
     def launch(self):
 
@@ -82,5 +103,25 @@ class sequence:
                 self.commandPaste()
         elif self.eventType == '브라우저':
             webbrowser.open(self._url, new=2)
+        elif self.eventType == '이동' or self.eventType == '마우스이동':
+            self.mouseMove(self.startXy)
+        elif self.eventType == '핀입력':
+            self.inputPinCount = 0
+            while len(self.pinList):
+                self.inputPinCount += 1
+
+                self.textTypo(self.pinList.popleft())
+
+                if self.inputPinCount == 5:
+                    break
+        elif self.eventType == '결과확인':
+            self.commandCopy()
+            self.loggingResult()
+            
+
+            # if len(self.pinList) == 0 and self.inputPinCount != 5:
+            #     for i in range(5 - self.inputPinCount):
+            #         self.textTypo('000000000000000000')
+                
 
         time.sleep(int(self.delayTime))
