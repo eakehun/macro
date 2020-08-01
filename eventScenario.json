@@ -6,37 +6,27 @@
             "endXy": "",
             "text": "",
             "url": "https://www.cultureland.co.kr/",
-            "command": "copy",
+            "command": "",
             "delayTime": "3",
             "actionType": 0
         },
         {
             "eventType": "\ud074\ub9ad",
-            "startXy": "1469, 563",
+            "startXy": "1674, 343",
             "endXy": "",
             "text": "",
             "url": "",
-            "command": "copy",
-            "delayTime": "1",
-            "actionType": 0
-        },
-        {
-            "eventType": "\ud074\ub9ad",
-            "startXy": "1662, 374",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "copy",
+            "command": "",
             "delayTime": "3",
             "actionType": 0
         },
         {
             "eventType": "\ud074\ub9ad",
-            "startXy": "818, 581",
+            "startXy": "831, 556",
             "endXy": "",
             "text": "",
             "url": "",
-            "command": "copy",
+            "command": "",
             "delayTime": "1",
             "actionType": 0
         },
@@ -44,19 +34,19 @@
             "eventType": "\ud14d\uc2a4\ud2b8",
             "startXy": "",
             "endXy": "",
-            "text": "gnogun2",
+            "text": "eakeee",
             "url": "",
-            "command": "copy",
+            "command": "",
             "delayTime": "1",
             "actionType": 0
         },
         {
             "eventType": "\ud074\ub9ad",
-            "startXy": "796, 645",
+            "startXy": "836, 634",
             "endXy": "",
             "text": "",
             "url": "",
-            "command": "copy",
+            "command": "",
             "delayTime": "1",
             "actionType": 0
         },
@@ -64,39 +54,39 @@
             "eventType": "\ud14d\uc2a4\ud2b8",
             "startXy": "",
             "endXy": "",
-            "text": "Song5525",
+            "text": "Qwer1357",
             "url": "",
-            "command": "copy",
+            "command": "",
             "delayTime": "1",
             "actionType": 0
         },
         {
             "eventType": "\ud074\ub9ad",
-            "startXy": "1018, 783",
+            "startXy": "930, 750",
             "endXy": "",
             "text": "",
             "url": "",
-            "command": "copy",
-            "delayTime": "1",
-            "actionType": 0
-        },
-        {
-            "eventType": "\uc774\ub3d9",
-            "startXy": "772, 263",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "copy",
+            "command": "",
             "delayTime": "1",
             "actionType": 0
         },
         {
             "eventType": "\ud074\ub9ad",
-            "startXy": "791, 341",
+            "startXy": "1214, 1006",
             "endXy": "",
             "text": "",
             "url": "",
-            "command": "copy",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1212, 1023",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
             "delayTime": "1",
             "actionType": 0
         }
@@ -104,11 +94,31 @@
     "repeatEventList": [
         {
             "eventType": "\ud074\ub9ad",
-            "startXy": "749, 616",
+            "startXy": "776, 241",
             "endXy": "",
             "text": "",
             "url": "",
-            "command": "copy",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 1
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "772, 621",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 1
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "761, 610",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
             "delayTime": "1",
             "actionType": 1
         },
@@ -118,58 +128,48 @@
             "endXy": "",
             "text": "",
             "url": "",
-            "command": "copy",
-            "delayTime": "3",
-            "actionType": 1
-        },
-        {
-            "eventType": "\ud074\ub9ad",
-            "startXy": "1091, 1001",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "copy",
-            "delayTime": "3",
-            "actionType": 1
-        },
-        {
-            "eventType": "\ud074\ub9ad",
-            "startXy": "1187, 837",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "copy",
-            "delayTime": "3",
-            "actionType": 1
-        },
-        {
-            "eventType": "\ub4dc\ub798\uadf8",
-            "startXy": "702, 802",
-            "endXy": "1539, 961",
-            "text": "",
-            "url": "",
-            "command": "copy",
+            "command": "",
             "delayTime": "1",
             "actionType": 1
         },
         {
-            "eventType": "\uacb0\uacfc\ud655\uc778",
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1072, 981",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 1
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1208, 823",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "5",
+            "actionType": 1
+        },
+        {
+            "eventType": "\ud56b\ud0a4",
             "startXy": "",
             "endXy": "",
             "text": "",
             "url": "",
-            "command": "copy",
+            "command": "close",
             "delayTime": "1",
             "actionType": 1
         },
         {
-            "eventType": "\ud074\ub9ad",
-            "startXy": "979, 1044",
+            "eventType": "\uceec\uccd0\uacb0\uacfc\ud655\uc778",
+            "startXy": "",
             "endXy": "",
             "text": "",
             "url": "",
-            "command": "copy",
-            "delayTime": "1",
+            "command": "",
+            "delayTime": "3",
             "actionType": 1
         }
     ]

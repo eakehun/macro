@@ -50,11 +50,11 @@ class eventManager(QObject):
         self.eventList.clear()
         self.repeatEventList.clear()
 
-    def deleteEventByIndex(self, actionType):
-        if actionType == 0:
-            del self.eventList[-1]
-        else:            
-            del self.repeatEventList[-1]
+    # def deleteEventByIndex(self, actionType):
+    #     if actionType == 0:
+    #         del self.eventList[-1]
+    #     else:            
+    #         del self.repeatEventList[-1]
 
     def executeEvent(self):
         self.isRun = True
@@ -62,7 +62,11 @@ class eventManager(QObject):
 
         for seq in self.eventList:
             if self.isRun:
-                seq.launch()
+                seq.launch(self)   
+            else:
+                break
+            
+                
 
         if len(self.repeatEventList) > 0:
             self.eventStarted.emit(self.repeatEventList)
@@ -92,7 +96,10 @@ class eventThread(QThread):
             # self.eventManager.executeEvent()
 
             for seq in self.repeatEventList:
-                seq.launch()
+                if self.isRun:
+                    seq.launch(self)   
+                else:
+                    break
 
     @pyqtSlot(list)
     def setEventList(self, repeatEventList):

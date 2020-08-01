@@ -15,7 +15,7 @@ class ButtonReleaseManager(QObject):
 
     MY_HOTKEY = {
         "mouse_position_copy": set([keyboard.Key.ctrl_l, keyboard.Key.alt_l, keyboard.KeyCode(67)]),
-        "loopStop": set([keyboard.Key.ctrl_l, keyboard.Key.alt_l, keyboard.KeyCode(68)])
+        "loopStop": set([keyboard.Key.ctrl_l, keyboard.Key.alt_l, keyboard.KeyCode(66)])
     }
     
     released = pyqtSignal()
@@ -98,9 +98,8 @@ class mainApp(QWidget):
         self.inputTypeCombobox.addItem('핀입력')
         self.inputTypeCombobox.addItem('핫키')
         self.inputTypeCombobox.addItem('브라우저')
-        self.inputTypeCombobox.addItem('결과확인')
-        
-
+        self.inputTypeCombobox.addItem('컬쳐결과확인')
+        self.inputTypeCombobox.addItem('해피결과확인')
 
         self.inputTypeCombobox.activated[str].connect(self.onActivated)
 
@@ -120,11 +119,11 @@ class mainApp(QWidget):
         hotkeyGroup = QButtonGroup(self)
         self.copyRadio = QRadioButton('복사')
         self.pasteRadio = QRadioButton('붙여넣기')
+        self.closeRadio = QRadioButton('창닫기')
 
         hotkeyGroup.addButton(self.copyRadio)
         hotkeyGroup.addButton(self.pasteRadio)
-
-
+        hotkeyGroup.addButton(self.closeRadio)
 
         delayTextLabel = QLabel('지연 시간', self)
 
@@ -150,6 +149,7 @@ class mainApp(QWidget):
         self.browserText.hide()
         self.copyRadio.hide()
         self.pasteRadio.hide()
+        self.closeRadio.hide()
         self.endCoText.setEnabled(False)
 
         self.copyRadio.setChecked(True)
@@ -204,7 +204,9 @@ class mainApp(QWidget):
         mainLayout.addWidget(self.browserText, 1, 3, 1, 3)
 
         mainLayout.addWidget(self.copyRadio, 1, 2)
-        mainLayout.addWidget(self.pasteRadio, 1, 3, 1, 3)
+        mainLayout.addWidget(self.pasteRadio, 1, 3)
+        mainLayout.addWidget(self.closeRadio, 1, 4)
+        
 
         mainLayout.addWidget(delayTextLabel, 1, 6)
         mainLayout.addWidget(self.delayText, 1, 7)
@@ -261,6 +263,7 @@ class mainApp(QWidget):
         self.browserText.hide()
         self.copyRadio.hide()
         self.pasteRadio.hide()
+        self.closeRadio.hide()
 
         self.startCoText.setText('')
         self.typoText.setText('')
@@ -269,7 +272,7 @@ class mainApp(QWidget):
         self.delayText.setText('')
 
 
-        if text == '클릭' or text == '이동':
+        if text == '클릭' or text == '마우스이동':
             self.startCoTextLabel.show()
             self.startCoText.show()
             self.endCoTextLabel.show()
@@ -290,6 +293,7 @@ class mainApp(QWidget):
         elif text == '핫키':
             self.copyRadio.show()
             self.pasteRadio.show()
+            self.closeRadio.show()
             self.copyRadio.setChecked(True)
         
         elif text == '브라우저':
@@ -304,12 +308,15 @@ class mainApp(QWidget):
         endXy = self.endCoText.text()
         typoText = self.typoText.text()
         url = self.browserText.text()
-        hotkey = 'copy'
+        hotkey = ''
 
-        if self.copyRadio.isChecked():
-            hotkey = 'copy'
-        else:
-            hotkey = 'paste'
+        if eventType == '핫키':
+            if self.copyRadio.isChecked():
+                hotkey = 'copy'
+            elif self.pasteRadio.isChecked():
+                hotkey = 'paste'
+            else:
+                hotkey = 'close'
 
 
         delay = self.delayText.text()
@@ -368,20 +375,20 @@ class mainApp(QWidget):
     def buildEventLayout(self):
         for idx, eventSeq in enumerate(self.eventManager.eventList):
 
-            seqString = '동작구분={0}, 시작좌표={1}, 끝좌표={2}, 텍스트={3}, 주소={7}단축키={4}, 지연시간={5}, 반복구분={6}\n' .format(eventSeq.eventType, eventSeq.startXy, eventSeq.endXy, eventSeq.text, eventSeq.command, eventSeq.delayTime, eventSeq.actionType, eventSeq._url)
+            seqString = '동작구분={0}, 시작좌표={1}, 끝좌표={2}, 텍스트={3}, 주소={7}, 단축키={4}, 지연시간={5}, 반복구분={6}\n' .format(eventSeq.eventType, eventSeq.startXy, eventSeq.endXy, eventSeq.text, eventSeq.command, eventSeq.delayTime, eventSeq.actionType, eventSeq._url)
 
             eventLabel = QLabel(seqString)
-            eventEditButton = QPushButton()
-            eventEditButton.setText('수정')
+            # eventEditButton = QPushButton()
+            # eventEditButton.setText('수정')
 
             eventDeleteButton = QPushButton()
             eventDeleteButton.setText('삭제')
 
-            eventEditButton.clicked.connect(lambda checked, _idx = idx : self.eventEdit(_idx, eventSeq.actionType))
+            # eventEditButton.clicked.connect(lambda checked, _idx = idx : self.eventEdit(_idx, eventSeq.actionType))
             eventDeleteButton.clicked.connect(lambda checked, _idx = idx : self.eventDelete(_idx, eventSeq.actionType))
 
             self.scrollWidget.layout().addWidget(eventLabel, idx, 0)
-            self.scrollWidget.layout().addWidget(eventEditButton, idx, 1)
+            # self.scrollWidget.layout().addWidget(eventEditButton, idx, 1)
             self.scrollWidget.layout().addWidget(eventDeleteButton, idx, 2)
 
         for idx, repeatEventSeq in enumerate(self.eventManager.repeatEventList, len(self.eventManager.eventList)):
@@ -389,17 +396,17 @@ class mainApp(QWidget):
             seqString = '동작구분={0}, 시작좌표={1}, 끝좌표={2}, 텍스트={3}, 주소={7}단축키={4}, 지연시간={5}, 반복구분={6}\n' .format(repeatEventSeq.eventType, repeatEventSeq.startXy, repeatEventSeq.endXy, repeatEventSeq.text, repeatEventSeq.command, repeatEventSeq.delayTime, repeatEventSeq.actionType, repeatEventSeq._url)
             
             eventLabel = QLabel(seqString)
-            eventEditButton = QPushButton()
-            eventEditButton.setText('수정')
+            # eventEditButton = QPushButton()
+            # eventEditButton.setText('수정')
 
             eventDeleteButton = QPushButton()
             eventDeleteButton.setText('삭제')
 
-            eventEditButton.clicked.connect(lambda checked, _idx = idx - len(self.eventManager.eventList) : self.eventEdit(_idx, repeatEventSeq.actionType))
+            # eventEditButton.clicked.connect(lambda checked, _idx = idx - len(self.eventManager.eventList) : self.eventEdit(_idx, repeatEventSeq.actionType))
             eventDeleteButton.clicked.connect(lambda checked, _idx = idx - len(self.eventManager.eventList) : self.eventDelete(_idx, repeatEventSeq.actionType))
 
             self.scrollWidget.layout().addWidget(eventLabel, idx, 0)
-            self.scrollWidget.layout().addWidget(eventEditButton, idx, 1)
+            # self.scrollWidget.layout().addWidget(eventEditButton, idx, 1)
             self.scrollWidget.layout().addWidget(eventDeleteButton, idx, 2)
         
     
@@ -416,7 +423,17 @@ class mainApp(QWidget):
         print('actionType:{0} index:{1} edit click'.format(actionType, _index))
 
     def eventDelete(self, _index, actionType):
-        print('actionType:{0} index:{1} delete click'.format(actionType, _index))
+        # print('actionType:{0} index:{1} delete click'.format(actionType, _index))
+        
+        if actionType == 0:
+            del self.eventManager.eventList[_index]
+            del self.eventManager.eventScenarioJson['eventList'][_index]
+        elif actionType == 1:
+            del self.eventManager.repeatEventList[_index]
+            del self.eventManager.eventScenarioJson['repeatEventList'][_index]        
+        
+        self.clearEventLayout()
+        self.buildEventLayout()
 
     @pyqtSlot()
     def show_position(self):
@@ -438,7 +455,7 @@ class mainApp(QWidget):
 
     def pinLoad(self, _data):
         pinData = _data['pinData']
-        count = 0;
+        count = 0
         # for i in range(2) :
         for pinString in pinData:
             
