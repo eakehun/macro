@@ -1,6 +1,66 @@
 {
     "eventList": [
         {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "761, 610",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud540\uc785\ub825",
+            "startXy": "",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1072, 981",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1208, 823",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "5",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud56b\ud0a4",
+            "startXy": "",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "close",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\uceec\uccd0\uacb0\uacfc\ud655\uc778",
+            "startXy": "",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "3",
+            "actionType": 0
+        },
+        {
             "eventType": "\ube0c\ub77c\uc6b0\uc800",
             "startXy": "",
             "endXy": "",
@@ -34,7 +94,7 @@
             "eventType": "\ud14d\uc2a4\ud2b8",
             "startXy": "",
             "endXy": "",
-            "text": "eakeee",
+            "text": "exodus10",
             "url": "",
             "command": "",
             "delayTime": "1",
@@ -54,7 +114,7 @@
             "eventType": "\ud14d\uc2a4\ud2b8",
             "startXy": "",
             "endXy": "",
-            "text": "Qwer1357",
+            "text": "qwer1357~",
             "url": "",
             "command": "",
             "delayTime": "1",
@@ -89,88 +149,137 @@
             "command": "",
             "delayTime": "1",
             "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "973, 250",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1231, 923",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "953, 243",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1446, 945",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ub9c8\uc6b0\uc2a4\uc2a4\ud06c\ub864",
+            "startXy": "",
+            "endXy": "",
+            "text": "-300",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1099, 1359",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1132, 734",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ub9c8\uc6b0\uc2a4\uc2a4\ud06c\ub864",
+            "startXy": "",
+            "endXy": "",
+            "text": "-300",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "702, 919",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1002, 1007",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1202, 893",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1185, 833",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1001, 1094",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
         }
     ],
-    "repeatEventList": [
-        {
-            "eventType": "\ud074\ub9ad",
-            "startXy": "776, 241",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "",
-            "delayTime": "1",
-            "actionType": 1
-        },
-        {
-            "eventType": "\ud074\ub9ad",
-            "startXy": "772, 621",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "",
-            "delayTime": "1",
-            "actionType": 1
-        },
-        {
-            "eventType": "\ud074\ub9ad",
-            "startXy": "761, 610",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "",
-            "delayTime": "1",
-            "actionType": 1
-        },
-        {
-            "eventType": "\ud540\uc785\ub825",
-            "startXy": "",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "",
-            "delayTime": "1",
-            "actionType": 1
-        },
-        {
-            "eventType": "\ud074\ub9ad",
-            "startXy": "1072, 981",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "",
-            "delayTime": "1",
-            "actionType": 1
-        },
-        {
-            "eventType": "\ud074\ub9ad",
-            "startXy": "1208, 823",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "",
-            "delayTime": "5",
-            "actionType": 1
-        },
-        {
-            "eventType": "\ud56b\ud0a4",
-            "startXy": "",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "close",
-            "delayTime": "1",
-            "actionType": 1
-        },
-        {
-            "eventType": "\uceec\uccd0\uacb0\uacfc\ud655\uc778",
-            "startXy": "",
-            "endXy": "",
-            "text": "",
-            "url": "",
-            "command": "",
-            "delayTime": "3",
-            "actionType": 1
-        }
-    ]
+    "repeatEventList": []
 }

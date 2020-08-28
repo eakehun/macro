@@ -1,0 +1,75 @@
+{
+    "eventList": [
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "830, 1361",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud540\uc785\ub825",
+            "startXy": "",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1676, 1212",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1258, 785",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "3",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud56b\ud0a4",
+            "startXy": "",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "close",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud574\ud53c\uacb0\uacfc\ud655\uc778",
+            "startXy": "",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        },
+        {
+            "eventType": "\ud074\ub9ad",
+            "startXy": "1378, 1242",
+            "endXy": "",
+            "text": "",
+            "url": "",
+            "command": "",
+            "delayTime": "1",
+            "actionType": 0
+        }
+    ],
+    "repeatEventList": []
+}

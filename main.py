@@ -31,4 +31,3 @@ data = win32clipboard.GetClipboardData()
 win32clipboard.CloseClipboard()
 
 print(data)
-qwe123

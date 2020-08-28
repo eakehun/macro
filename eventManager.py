@@ -24,10 +24,8 @@ class eventManager(QObject):
 
         self.isRun = True
         
-        # print('event manager')
 
     def addEvent(self, sequence, actionType):
-
         eventDict = {
             "eventType": sequence.eventType,
             "startXy": sequence.startXy,
@@ -50,37 +48,19 @@ class eventManager(QObject):
         self.eventList.clear()
         self.repeatEventList.clear()
 
-    # def deleteEventByIndex(self, actionType):
-    #     if actionType == 0:
-    #         del self.eventList[-1]
-    #     else:            
-    #         del self.repeatEventList[-1]
-
     def executeEvent(self):
-        self.isRun = True
-        
+        self.isRun = True        
 
         for seq in self.eventList:
             if self.isRun:
                 seq.launch(self)   
             else:
                 break
-            
-                
 
         if len(self.repeatEventList) > 0:
             self.eventStarted.emit(self.repeatEventList)
             self.eventThread.isRun = True
             self.eventThread.start()
-
-            # while True:
-                
-            #         for seq in self.repeatEventList:
-            #             seq.launch()
-            #     except KeyboardInterrupt:
-            #         break
-
-    
 
 
 class eventThread(QThread):
@@ -88,13 +68,9 @@ class eventThread(QThread):
     def __init__(self, parent=None):
        super().__init__() 
        self.isRun = False
-       
-
     
     def run(self):
         while self.isRun:
-            # self.eventManager.executeEvent()
-
             for seq in self.repeatEventList:
                 if self.isRun:
                     seq.launch(self)   
@@ -104,5 +80,3 @@ class eventThread(QThread):
     @pyqtSlot(list)
     def setEventList(self, repeatEventList):
         self.repeatEventList = repeatEventList
-
-

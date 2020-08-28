@@ -65,7 +65,7 @@ class sequence:
 
         # pyautogui.hotkey('ctrl', 'v')
 
-        pyautogui.write(text, interval=0.1)
+        pyautogui.write(text, interval=0.05)
 
     def commandCopy(self):
         pyautogui.hotkey('ctrl', 'c')
@@ -91,54 +91,72 @@ class sequence:
 
         # print(resultString)
 
-        fileExist = os.path.isfile('C:/Users/gnogu/OneDrive/Documents/culture.htm')
+        # fileExist = os.path.isfile('C:/Users/gnogu/OneDrive/Documents/culture.htm')
 
-        pyautogui.hotkey('ctrl', 's')
+        # pyautogui.hotkey('ctrl', 's')
+
+        # time.sleep(1)
+
+        # pyautogui.write('culture.htm', interval=0.1)
+
+        # time.sleep(1)
+
+        # pyautogui.press('tab')
+
+        # time.sleep(1)
+
+        # pyautogui.press('down')
+
+        # time.sleep(1)
+
+        # pyautogui.press('down')
+
+        # time.sleep(1)
+
+        # pyautogui.press('down')
+
+        # time.sleep(1)
+
+        # pyautogui.press('enter')
+
+        # time.sleep(1)
+
+        # pyautogui.press('enter')
+
+        # if fileExist:
+        #     time.sleep(1)
+        #     pyautogui.press('left')
+        #     time.sleep(1)
+        #     pyautogui.press('enter')
+
+        # time.sleep(5)
+
+        # f = open("C:/Users/gnogu/OneDrive/Documents/culture.htm", 'r', encoding='UTF8')
+        # data = f.read()
+
+        # soup = BeautifulSoup(data, 'html.parser')
+
+        # name = soup.select('#contents > div.contents > div.section.sec-form > div > div.article > table > tbody')
+
+        # resultString = name[0].text
+
+        pyautogui.hotkey('ctrl', 'a')
 
         time.sleep(1)
 
-        pyautogui.write('culture.htm', interval=0.1)
+        pyautogui.hotkey('ctrl', 'c')
 
         time.sleep(1)
 
-        pyautogui.press('tab')
+        win32clipboard.OpenClipboard()
+        resultString = win32clipboard.GetClipboardData()
+        win32clipboard.EmptyClipboard()
+        win32clipboard.CloseClipboard()
 
-        time.sleep(1)
+        index1 = resultString.find('충전금액')
+        index2 = resultString.find('추가 충전하기')
 
-        pyautogui.press('down')
-
-        time.sleep(1)
-
-        pyautogui.press('down')
-
-        time.sleep(1)
-
-        pyautogui.press('down')
-
-        time.sleep(1)
-
-        pyautogui.press('enter')
-
-        time.sleep(1)
-
-        pyautogui.press('enter')
-
-        if fileExist:
-            time.sleep(1)
-            pyautogui.press('left')
-            time.sleep(1)
-            pyautogui.press('enter')
-
-        time.sleep(5)
-
-        f = open("C:/Users/gnogu/OneDrive/Documents/culture.htm", 'r', encoding='UTF8')
-        data = f.read()
-
-        soup = BeautifulSoup(data, 'html.parser')
-
-        name = soup.select('#contents > div.contents > div.section.sec-form > div > div.article > table > tbody')
-
-        resultString = name[0].text
+        resultString = resultString[index1:index2]
 
         print(resultString)
 
@@ -147,14 +165,32 @@ class sequence:
         logFile.close
 
     def happyLoggingResult(self):
+        pyautogui.hotkey('ctrl', 'a')
+
+        time.sleep(1)
+
+        pyautogui.hotkey('ctrl', 'c')
+
+        time.sleep(1)
+
         win32clipboard.OpenClipboard()
         resultString = win32clipboard.GetClipboardData()
         win32clipboard.EmptyClipboard()
         win32clipboard.CloseClipboard()
 
-        resultString = resultString.replace('null')
+        index1 = resultString.find('충전금액 (원)')
+        index2 = resultString.find('내역조회')        
 
-        print(resultString)        
+        resultString = resultString[index1:index2]
+
+        print(resultString)
+
+        logFile = open('log.txt', 'a', encoding='utf-8')
+        logFile.write(resultString)
+        logFile.close
+
+    def mouseScroll(self, scrollNum):
+        pyautogui.scroll(int(scrollNum), 0.1)
 
     def launch(self, evManager):
 
@@ -173,7 +209,6 @@ class sequence:
             elif self.command == 'close':
                 self.commandClose()
         elif self.eventType == '브라우저':
-            # webbrowser.open(self._url, new=2)
             iexplore = os.path.join(os.environ.get("PROGRAMFILES", "C:/Program Files"),"Internet Explorer/IEXPLORE.EXE")
             ie = webbrowser.BackgroundBrowser(iexplore)
             ie.open(self._url, new=2)
@@ -193,16 +228,13 @@ class sequence:
 
                 if self.inputPinCount == 5:
                     break
-        elif self.eventType == '컬쳐결과확인':
-            # self.commandCopy()
+        elif self.eventType == '컬쳐결과확인':            
             self.cultureLoggingResult()
             
-
-            # if len(self.pinList) == 0 and self.inputPinCount != 5:
-            #     for i in range(5 - self.inputPinCount):
-            #         self.textTypo('000000000000000000')
         elif self.eventType == '해피결과확인':
-
             self.happyLoggingResult()
+
+        elif self.eventType == '마우스스크롤':
+            self.mouseScroll(self.text)
 
         time.sleep(int(self.delayTime))

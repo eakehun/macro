@@ -42,6 +42,7 @@ import pyautogui
 
 # mouse.drag(26, 803, 480, 872, absolute=True, duration=1)
 
+pyautogui.scroll(20)
 
 # pyautogui.moveTo(27, 629)
 # pyautogui.mouseDown(button='left')
@@ -59,8 +60,8 @@ import pyautogui
 # time.sleep(1)
 # mouse.release(Button.left)
 
-pyautogui.moveTo(x=27, y=629)
-pyautogui.dragTo(x=527, y=629, duration=1, button='left')
+# pyautogui.moveTo(x=27, y=629)
+# pyautogui.dragTo(x=527, y=629, duration=1, button='left')
 
 # pyautogui.moveTo(27, 629)
 # pyautogui.mouseDown(button='left')
